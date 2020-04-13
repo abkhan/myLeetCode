@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"strconv"
 )
 
 var testvals = [][]int{
@@ -29,8 +27,6 @@ func main() {
 }
 
 func threeSumClosest(nums []int, target int) int {
-	var perms [][]int
-	var retv [][]int
 
 	if len(nums) < 1 {
 		return 0
@@ -42,91 +38,35 @@ func threeSumClosest(nums []int, target int) int {
 		return nums[0] + nums[1]
 	}
 
-	// first, remove dupli
-	nodup := make(map[int]bool)
-	for _, ent := range nums {
-		nodup[ent] = true
-	}
-
-	if len(nodup) < 2 && len(nums) > 3 {
-		fmt.Println("no dup is 1, nums len is %d", len(nums))
-		for k := range nodup {
-			return k * 3
-		}
-	}
-
-	ath := make(map[string]bool)
-	intmap := make(map[int]string)
-	iter := 0
+	closestSum := 999999
+	closestDiff := 999999
 	// then create a permutation, with sort and compare
 	for fi := 0; fi < len(nums)-2; fi++ {
 		fv := nums[fi]
 		for se := fi + 1; se < len(nums)-1; se++ {
 			sv := nums[se]
-			fit := fv + sv
 
 			for th := se + 1; th < len(nums); th++ {
-				iter++
 				tv := nums[th]
 
-				if fit+tv == 0 {
-
-					var onep []int = sort3sum([]int{fv, sv, tv})
-					nfv := onep[0]
-					nsv := onep[1]
-					ntv := onep[2]
-
-					var str0, str1, str2 string
-					var k bool
-
-					if str0, k = intmap[nfv]; !k {
-						str0 = strconv.Itoa(nfv)
-						intmap[nfv] = str0
-					}
-					if str1, k = intmap[nsv]; !k {
-						str1 = strconv.Itoa(nsv)
-						intmap[nsv] = str1
-					}
-					if str2, k = intmap[ntv]; !k {
-						str2 = strconv.Itoa(ntv)
-						intmap[ntv] = str2
-					}
-
-					thsumstr := str0 + str1 + str2
-					if _, j := ath[thsumstr]; !j {
-
-						ath[thsumstr] = true
-						perms = append(perms, onep)
-
-					}
+				sum := fv + sv + tv
+				diff := abso(sum - target)
+				if diff < closestDiff {
+					closestDiff = diff
+					closestSum = sum
 				}
+
 			}
 		}
 	}
-	fmt.Printf("iterations: %d\n", iter)
 
-	return perms
+	return closestSum
 }
 
-func sort3sum(e []int) []int {
+func abso(x int) int {
 
-	if e[0] > e[1] {
-		t := e[1]
-		e[1] = e[0]
-		e[0] = t
+	if x < 0 {
+		return -x
 	}
-
-	if e[1] > e[2] {
-		t := e[2]
-		e[2] = e[1]
-		e[1] = t
-	}
-
-	if e[0] > e[1] {
-		t := e[1]
-		e[1] = e[0]
-		e[0] = t
-	}
-
-	return e
+	return x
 }
