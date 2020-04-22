@@ -1,0 +1,99 @@
+package main
+
+import (
+	"log"
+)
+
+var testvals = []int{
+	-1, 0, 1, 2, 3, 4, 5, 6,
+}
+
+func main() {
+
+	for _, tvals := range testvals {
+		log.Printf("for %d paran [%+v]\n", tvals, generateParenthesis(tvals))
+		log.Print("-----\n")
+	}
+}
+
+func generateParenthesis(n int) []string {
+	if n < 1 {
+		return []string{}
+	}
+	if n == 1 {
+		return []string{"()"}
+	}
+
+	irv := mpPerm(1, n)
+	log.Printf("IRV: %+v\n", irv)
+
+	var retss []string
+	for _, onee := range irv {
+		retss = append(retss, intToStr(onee))
+	}
+	return retss
+}
+
+func intToStr(es []int) string {
+	st := make(chan string, len(es))
+	var retval string
+	for x, v := range es {
+		if v == 1 {
+			retval += "("
+			if x+1 >= len(es) {
+				retval += ")"
+				break
+			}
+			if es[x+1] > 0 { // next one is independent
+				retval += ")"
+				continue
+			} else {
+				st <- ")" // save up in stack
+			}
+
+		}
+
+		// for all the rest
+
+		retval += "("
+		if x+1 >= len(es) { // if last
+			retval += ")"
+			for x := 0; x < len(st); x++ {
+				retval += <-st
+			}
+			break
+		}
+
+		if es[x+1] > 0 { // next one is independent
+			retval += ")"
+			for x := 0; x < len(st); x++ {
+				retval += <-st
+			}
+			continue
+		} else {
+			st <- ")" // save up in stack
+		}
+
+	}
+	return retval
+}
+
+func mpPerm(n, max int) [][]int {
+	if n == max {
+		return [][]int{{n}, {0 - n}}
+	}
+
+	thispm := []int{n, 0 - n}
+	if n == 1 {
+		thispm = []int{1}
+	}
+	ret := [][]int{}
+	currs := mpPerm(n+1, max)
+	for _, pm := range thispm {
+		for _, cur := range currs {
+			list := append([]int{pm}, cur...)
+			ret = append(ret, list)
+		}
+	}
+	return ret
+}
