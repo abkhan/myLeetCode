@@ -28,6 +28,8 @@ func main() {
 	}
 }
 
+// digits are also in string
+// return slice of strings that is combination of letters
 func letterCombinations(digits string) []string {
 	if len(digits) < 1 {
 		return []string{}
@@ -43,19 +45,20 @@ func letterCombinations(digits string) []string {
 	return makes(inputLetters, 0)
 }
 
+// each letter is a string, input has slice of combination of letter
 func makes(inl [][]string, ci int) []string {
 	if ci == len(inl)-1 {
 		return inl[len(inl)-1]
 	}
 
-	mids := makes(inl, ci+1)
-	these := inl[ci]
+	mids := makes(inl, ci+1) // all after current index
+	these := inl[ci]         // current index
 
 	// now multiply
 	var retlist []string
-	for _, th := range these {
-		for _, mid := range mids {
-			retlist = append(retlist, th+mid)
+	for _, th := range these { // for each letter of current index
+		for _, mid := range mids { // for each string of combinations
+			retlist = append(retlist, th+mid) // add the letter to each string
 		}
 	}
 

@@ -40,6 +40,7 @@ func reverse(x int) int {
 
 	iarr = reverseInts(iarr)
 
+	// at each index, value of the digit at that index
 	for i := len(iarr) - 1; i >= 0; i-- {
 		tv := 1
 		for j := 0; j < i; j++ {
@@ -49,6 +50,7 @@ func reverse(x int) int {
 		log.Printf("Value at %d: %d", i, iarr[i])
 	}
 
+	// now add them all up at into retval
 	retval := 0
 	for i := 0; i < len(iarr); i++ {
 		retval += iarr[i]

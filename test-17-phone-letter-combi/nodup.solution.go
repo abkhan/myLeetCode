@@ -34,6 +34,7 @@ func letterCombinations(digits string) []string {
 	}
 
 	// remove duplicates
+	// by using a letter-map so that if there is a duplicate, it would not be a duplicate in output
 	nodup := make(map[byte]bool)
 	for i := 0; i < len(digits); i++ {
 		nodup[digits[i]] = true

@@ -17,8 +17,8 @@ func convert(s string, numRows int) string {
 		rows = append(rows, output)
 	}
 
-	cr := 0
-	ascent := false
+	cr := 0         // startin line
+	ascent := false // going up or not
 	for si := 0; si < len(s); si++ {
 		log.Printf("Index: %d, Ascent: %+v, CR: %d", si, ascent, cr)
 		rows[cr] += string(s[si])

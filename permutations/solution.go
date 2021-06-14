@@ -12,6 +12,8 @@ func permutations(s string) []string {
 	return perfperm(s, "")
 }
 
+// s is the input string
+// p is prefix, added up
 func perfperm(s, p string) []string {
 	if len(s) == 0 {
 		return []string{p}
