@@ -10,11 +10,11 @@ func main() {
 }
 
 func onePass_removeNthFromEnd(head *ListNode, n int) *ListNode {
-	var lna []*ListNode
+	var lna []*ListNode // use a list of all nodes to skip
 	nxt := head
 	for {
 		if nxt != nil {
-			lna = append(lna, nxt)
+			lna = append(lna, nxt) // go over linked list and create a list of all nodes
 			nxt = nxt.Next
 		} else {
 			break
@@ -25,7 +25,7 @@ func onePass_removeNthFromEnd(head *ListNode, n int) *ListNode {
 		return head.Next
 	}
 
-	lna[skip-1].Next = lna[skip].Next
+	lna[skip-1].Next = lna[skip].Next // just update in the list-of-all-nodes and lined list will be changed
 	return head
 }
 
